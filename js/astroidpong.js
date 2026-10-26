@@ -21,6 +21,7 @@
   const ROUND_TIME = 10;      // seconds per round
   const START_LIVES = 3;
   const ROT_SPEED = 3.6;      // radians / second
+  const SHIP_SPEED = 105;     // pixels / second (WASD movement)
   const BULLET_SPEED = 240;
   const FIRE_COOLDOWN = 0.2;
   const MAX_BULLETS = 5;
@@ -83,8 +84,9 @@
   ];
 
   /* ---------- Input ---------- */
-  const keys = { left: false, right: false, fire: false };
-  const touch = { left: false, right: false, fire: false };
+  // left / right = rotate (arrow keys), mleft / mright / up / down = move (WASD)
+  const keys = { left: false, right: false, fire: false, mleft: false, mright: false, up: false, down: false };
+  const touch = { left: false, right: false, fire: false, mleft: false, mright: false, up: false, down: false };
 
   const isButton = (el) => el && el.closest && el.closest("button, a");
 
@@ -92,8 +94,12 @@
     const k = e.key;
     if ([" ", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(k) && !isButton(e.target)) e.preventDefault();
 
-    if (k === "ArrowLeft" || k === "a" || k === "A") keys.left = true;
-    else if (k === "ArrowRight" || k === "d" || k === "D") keys.right = true;
+    if (k === "ArrowLeft") keys.left = true;
+    else if (k === "ArrowRight") keys.right = true;
+    else if (k === "a" || k === "A") keys.mleft = true;
+    else if (k === "d" || k === "D") keys.mright = true;
+    else if (k === "w" || k === "W") keys.up = true;
+    else if (k === "s" || k === "S") keys.down = true;
     else if (k === " ") {
       keys.fire = true;
       if ((state === "title" || state === "over") && !isButton(e.target)) startGame();
@@ -105,12 +111,16 @@
 
   window.addEventListener("keyup", (e) => {
     const k = e.key;
-    if (k === "ArrowLeft" || k === "a" || k === "A") keys.left = false;
-    else if (k === "ArrowRight" || k === "d" || k === "D") keys.right = false;
+    if (k === "ArrowLeft") keys.left = false;
+    else if (k === "ArrowRight") keys.right = false;
+    else if (k === "a" || k === "A") keys.mleft = false;
+    else if (k === "d" || k === "D") keys.mright = false;
+    else if (k === "w" || k === "W") keys.up = false;
+    else if (k === "s" || k === "S") keys.down = false;
     else if (k === " ") keys.fire = false;
   });
 
-  window.addEventListener("blur", () => { keys.left = keys.right = keys.fire = false; });
+  window.addEventListener("blur", () => { Object.keys(keys).forEach((k) => { keys[k] = false; }); });
 
   document.querySelectorAll("[data-touch]").forEach((btn) => {
     const key = btn.dataset.touch;
@@ -257,6 +267,8 @@
     bullets = [];
     parts = [];
     spawnQ = [];
+    ship.x = W / 2;
+    ship.y = H / 2;
     ship.a = -Math.PI / 2;
     ship.cool = 0;
     ship.inv = 0;
@@ -394,6 +406,17 @@
     // ship
     const dirInput = (keys.right || touch.right ? 1 : 0) - (keys.left || touch.left ? 1 : 0);
     ship.a += dirInput * ROT_SPEED * dt;
+
+    // free movement with WASD (diagonals are normalised), kept inside the court
+    const mx = (keys.mright || touch.mright ? 1 : 0) - (keys.mleft || touch.mleft ? 1 : 0);
+    const my = (keys.down || touch.down ? 1 : 0) - (keys.up || touch.up ? 1 : 0);
+    if (mx || my) {
+      const len = Math.hypot(mx, my);
+      ship.x += (mx / len) * SHIP_SPEED * dt;
+      ship.y += (my / len) * SHIP_SPEED * dt;
+    }
+    ship.x = clamp(ship.x, 18, W - 18);
+    ship.y = clamp(ship.y, 8, H - 8);
     ship.cool -= dt;
     if (ship.inv > 0) ship.inv -= dt;
 
@@ -550,12 +573,13 @@
 
     // overlays
     if (state === "title") {
-      const { y } = panel(236, 124);
+      const { y } = panel(236, 138);
       text("ASTROIDPONG", W / 2, y + 12, 16);
-      text("SHOOT THE BALLS", W / 2, y + 40, 8);
-      text("A / D OR ARROWS: AIM", W / 2, y + 60, 8, C.ink);
-      text("SPACE: FIRE", W / 2, y + 74, 8, C.ink);
-      if (blink()) text("PRESS ENTER", W / 2, y + 100, 8, C.ball);
+      text("SHOOT THE BALLS", W / 2, y + 38, 8);
+      text("WASD: MOVE", W / 2, y + 58, 8, C.ink);
+      text("ARROWS: AIM", W / 2, y + 72, 8, C.ink);
+      text("SPACE: FIRE", W / 2, y + 86, 8, C.ink);
+      if (blink()) text("PRESS ENTER", W / 2, y + 112, 8, C.ball);
     } else if (state === "over") {
       const { y } = panel(200, 112);
       text("GAME OVER", W / 2, y + 12, 16);
