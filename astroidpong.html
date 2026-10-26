@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AstroidPong – Abhay Jain</title>
+  <meta name="description" content="AstroidPong: Pong meets Asteroids. Shoot the balls and survive 10-second rounds.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/games.css">
+</head>
+<body class="page-fill">
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="logo" href="index.html">ABHAY JAIN</a>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html">Projects</a>
+        <a href="games.html" aria-current="page">Games</a>
+        <a href="wip.html">About</a>
+        <a href="wip.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero hero-short" aria-labelledby="play-title">
+      <div class="wrap">
+        <h1 id="play-title">Astroid<strong>Pong</strong></h1>
+        <p class="hero-sub">Pong meets Asteroids. Survive the rounds.</p>
+      </div>
+    </section>
+
+    <section class="section section-play" aria-label="Game">
+      <div class="wrap">
+        <div class="game-stage" id="stage">
+          <div class="game-frame">
+
+            <div class="hud">
+              <div class="hud-item"><span>SCORE</span><span id="hud-score">00000</span></div>
+              <div class="hud-item"><span>BEST</span><span id="hud-best">00000</span></div>
+              <div class="hud-item"><span>ROUND</span><span id="hud-round">1</span></div>
+              <div class="hud-item"><span>LIVES</span><div class="hud-lives" id="hud-lives" role="img" aria-label="Lives"></div></div>
+            </div>
+            <div class="hud-time" aria-hidden="true"><span id="hud-bar"></span></div>
+
+            <canvas id="game" width="320" height="240" role="img" aria-label="AstroidPong game. Use the left and right keys to aim the ship, and space to fire."></canvas>
+
+            <div class="touch-controls" aria-label="Touch controls">
+              <button type="button" data-touch="left" aria-label="Rotate left">&lt;</button>
+              <button type="button" data-touch="fire" aria-label="Fire">FIRE</button>
+              <button type="button" data-touch="right" aria-label="Rotate right">&gt;</button>
+            </div>
+
+            <div class="game-bar">
+              <span class="keys">Aim: A / D or arrow keys. Fire: Space. Pause: P.</span>
+              <button class="sound-btn" id="sound-btn" type="button" aria-pressed="true">SOUND ON</button>
+            </div>
+
+            <noscript><p class="noscript">AstroidPong needs JavaScript to run.</p></noscript>
+          </div>
+        </div>
+
+        <div class="how">
+          <div>
+            <h3>The goal</h3>
+            <p>Two CPUs are playing Pong and you are the ship in the middle. Shoot the balls before they reach you. Each ball you destroy scores 100 points and a new one is served.</p>
+          </div>
+          <div>
+            <h3>The rounds</h3>
+            <p>Each round lasts 10 seconds. After every round one more ball joins the game, so round 5 has 5 balls. Finish a round for a bonus.</p>
+          </div>
+          <div>
+            <h3>The controls</h3>
+            <p>Rotate with <kbd>A</kbd> <kbd>D</kbd> or the arrow keys, fire with <kbd>Space</kbd>, pause with <kbd>P</kbd>. You have 3 lives, and on touch screens use the buttons.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="footer-thanks wip-thanks">Thank you for visiting :)</p>
+  </footer>
+  <script src="js/astroidpong.js" defer></script>
+</body>
+</html>

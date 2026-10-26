@@ -1,0 +1,207 @@
+/* ==========================================================================
+   Games pages (games.html, astroidpong.html)
+   ========================================================================== */
+
+:root { --pixel: "Press Start 2P", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; }
+
+.page-fill { min-height: 100vh; display: flex; flex-direction: column; }
+.page-fill > main { flex: 1; }
+
+.hero-short { height: 260px; }
+
+/* ---------- Games page: tiles ---------- */
+
+.section-games { padding-top: 47px; padding-bottom: 80px; }
+.section-games .section-label { margin-bottom: 64px; }
+
+.card-game { grid-column: 1 / -1; background: var(--blue); }
+.card-game .card-text { align-self: center; }
+.card-game .card-icon { width: 109px; height: 109px; margin-bottom: 37px; }
+.card-game .card-title { font-size: 34px; line-height: 41px; margin-bottom: 28px; }
+.card-game .card-desc { font-size: 22px; line-height: 28px; }
+
+.game-art {
+  position: absolute;
+  top: 50%;
+  right: 64px;
+  width: 332px;
+  height: 252px;
+  border: 6px solid var(--black);
+  background: var(--cream);
+  transform: translateY(-50%) rotate(2deg);
+  transition: transform 0.4s var(--ease);
+  z-index: 0;
+}
+
+.card:hover .game-art,
+.card:focus-visible .game-art { transform: translateY(-50%) rotate(0deg) scale(1.04); }
+
+/* ---------- Game page ---------- */
+
+.section-play { padding-top: 47px; }
+
+.game-stage {
+  margin-inline: 3px;
+  padding: 32px 28px 28px;
+  background: var(--cream);
+  border-radius: var(--radius);
+}
+
+.game-stage.shake { animation: stage-shake 0.28s linear; }
+
+@keyframes stage-shake {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-5px, 2px); }
+  40% { transform: translate(5px, -2px); }
+  60% { transform: translate(-3px, -2px); }
+  80% { transform: translate(3px, 2px); }
+}
+
+.game-frame {
+  width: min(100%, max(320px, min(840px, calc((100svh - 280px) * 4 / 3))));
+  margin-inline: auto;
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-family: var(--pixel);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.hud-item span:first-child { display: block; margin-bottom: 8px; font-size: 8px; color: #6b6b6b; }
+.hud-lives { display: flex; gap: 4px; height: 18px; }
+.hud-lives svg { color: var(--black); }
+.hud-lives svg.lost { opacity: 0.18; }
+
+.hud-time {
+  height: 12px;
+  margin-bottom: 14px;
+  border: 3px solid var(--black);
+  background: var(--white);
+}
+.hud-time span { display: block; height: 100%; width: 100%; background: var(--black); }
+
+#game {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--cream);
+  border: 6px solid var(--black);
+  image-rendering: pixelated;
+  image-rendering: pixelated;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.game-bar {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-text);
+  font-size: 14px;
+  color: var(--grey-text);
+}
+
+.sound-btn {
+  padding: 8px 10px;
+  font-family: var(--pixel);
+  font-size: 9px;
+  color: var(--black);
+  background: var(--white);
+  border: 3px solid var(--black);
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+.sound-btn:hover { background: var(--blue); }
+.sound-btn:active { transform: translateY(2px); }
+
+.touch-controls { display: none; margin-top: 18px; justify-content: center; gap: 14px; }
+
+.touch-controls button {
+  min-width: 84px;
+  height: 60px;
+  padding: 0 14px;
+  font-family: var(--pixel);
+  font-size: 14px;
+  color: var(--black);
+  background: var(--white);
+  border: 4px solid var(--black);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.touch-controls button.is-down { background: var(--blue); transform: translateY(2px); }
+
+@media (pointer: coarse) { .touch-controls { display: flex; } .game-bar .keys { display: none; } }
+
+.how {
+  margin: 56px 3px 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  font-family: var(--font-text);
+}
+.how h3 { font-family: var(--font-display); font-size: 21px; line-height: 31px; font-weight: 400; letter-spacing: -0.01em; }
+.how p { margin-top: 10px; font-size: 16px; line-height: 24px; color: #222; }
+.how kbd {
+  display: inline-block;
+  padding: 0 6px;
+  font-family: var(--font-text);
+  font-size: 13px;
+  line-height: 20px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.noscript { padding: 24px; text-align: center; font-family: var(--font-text); }
+
+@media (max-width: 1155px) {
+  .game-stage { margin-inline: 0; }
+}
+
+@media (max-width: 800px) {
+  .how { grid-template-columns: 1fr; gap: 28px; margin-top: 40px; }
+}
+
+@media (max-width: 700px) {
+  .hero-short { height: auto; padding: 56px 0; }
+  .section-games { padding-top: 40px; }
+  .section-games .section-label { margin-bottom: 32px; }
+
+  .card-game .card-icon { width: 88px; height: 88px; margin-bottom: 24px; }
+  .card-game .card-title { font-size: 30px; line-height: 36px; margin-bottom: 14px; }
+  .card-game .card-desc { font-size: 19px; line-height: 26px; }
+  .card-game .card-text { align-self: stretch; padding: 32px 28px 8px; }
+
+  .game-art {
+    position: relative;
+    top: auto;
+    right: auto;
+    align-self: center;
+    width: calc(100% - 56px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    margin: 20px 0 32px;
+    transform: rotate(2deg);
+  }
+  .card:hover .game-art,
+  .card:focus-visible .game-art { transform: rotate(0deg) scale(1.03); }
+
+  .game-stage { padding: 20px 14px 20px; border-radius: 32px; }
+  .hud { font-size: 10px; }
+  .hud-item span:first-child { font-size: 7px; }
+  #game { border-width: 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-stage.shake { animation: none; }
+  .game-art { transition: none; }
+}
